@@ -62,4 +62,10 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
+
+
+    public function login(AuthenticateUser $authenticateUser, Request $request, $provider = null) {
+       return $authenticateUser->execute($request->all(), $this, $provider);
+    }
 }
