@@ -14,3 +14,19 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+//Social Login
+Route::get('/login/{provider?}',[
+    'uses' => 'AuthController@getSocialAuth',
+    'as'   => 'auth.getSocialAuth'
+]);
+
+
+Route::get('/login/callback/{provider?}',[
+    'uses' => 'AuthController@getSocialAuthCallback',
+    'as'   => 'auth.getSocialAuthCallback'
+]);
+
+Route::get('/logged', function () {
+    return view('logged');
+});
