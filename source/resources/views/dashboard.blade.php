@@ -22,30 +22,16 @@
     <link rel="stylesheet" href="<?php echo asset('css/style.css')?>" type="text/css">
   </head>
   <body>
-    <div class="container frontpage center-block">
-      <div class="row title">
-        <div class="col-lg-12 text-center">
-          <h1>Login with <a href="/login"><i class="fa fa-google-plus-square fa-lg"></i></a> !</h1>
+    <div class="container menubar">
+      <div class="row">
+        <div class="col-lg-6 text-left">
+          <img class="logo-img" src="<?php echo asset('img/myfitnesspal.png')?>" />
+        </div>
+
+        <div class="col-lg-6 text-right user-menu">
+          <h4><i class="fa fa-user"></i> {{$userName}}</h4>
         </div>
       </div>
-    </div>
-
-    <div class="row logos text-center">
-      <div class="col-lg-4">
-        <i class="fa fa-calendar fa-2x"></i>
-      </div>
-
-      <div class="col-lg-4">
-        <img src="<?php echo asset('img/myfitnesspal.png')?>">
-      </div>
-
-      <div class="col-lg-4">
-        <i class="fa fa-globe fa-2x"></i>
-      </div>
-
-      <br />
-
-      <h3>Developed with <i class="fa fa-heart fa-lg faa-pulse animated"></i> at the #CiscoUC15</h3>
     </div>
   </body>
 </html>

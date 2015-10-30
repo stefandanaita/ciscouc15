@@ -16,17 +16,5 @@ Route::get('/', function () {
 });
 
 //Social Login
-Route::get('/login/{provider?}',[
-    'uses' => 'AuthController@getSocialAuth',
-    'as'   => 'auth.getSocialAuth'
-]);
-
-
-Route::get('/login/callback/{provider?}',[
-    'uses' => 'AuthController@getSocialAuthCallback',
-    'as'   => 'auth.getSocialAuthCallback'
-]);
-
-Route::get('/logged', function () {
-    return view('logged');
-});
+Route::get('/login', 'AuthController@redirectToProvider');
+Route::get('/dashboard', 'AuthController@handleProviderCallback');

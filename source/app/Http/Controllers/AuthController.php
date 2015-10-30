@@ -1,30 +1,41 @@
-<?php namespace App\Http\Controllers;
+<?php
 
- use Laravel\Socialite\Contracts\Factory as Socialite;
+namespace App\Http\Controllers;
 
- class AuthController extends Controller
- {
+use Socialite;
+use Illuminate\Routing\Controller;
+use View;
+use Auth;
 
-       public function __construct(Socialite $socialite){
-           $this->socialite = $socialite;
-       }
+class AuthController extends Controller
+{
+  /**
+    * Redirect the user to the Google authentication page.
+    *
+    * @return Response
+    */
+  public function redirectToProvider()
+  {
+    return Socialite::driver('google')->redirect();
+  }
 
+  /**
+    * Obtain the user information from Google.
+    *
+    * @return Response
+    */
+  public function handleProviderCallback()
+  {
+    try {
+      $user = Socialite::driver('google')->user();
+    } catch (\Exception $e) {
+      return view('welcome');
+    }
 
-       public function getSocialAuth($provider=null)
-       {
-           if(!config("services.$provider")) abort('404'); //just to handle providers that doesn't exist
-
-           return $this->socialite->with($provider)->redirect();
-       }
-
-
-       public function getSocialAuthCallback($provider=null)
-       {
-          if($user = $this->socialite->with($provider)->user()){
-             dd($user);
-          }else{
-             return 'Something went wrong';
-          }
-       }
-
- }
+    $userId     =   $user->getId();
+    $userName   =   $user->getName();
+    $userEmail  =   $user->getEmail();
+    $userAvatar =   $user->getAvatar();
+    return view('dashboard', ['userId' => $userId, 'userName' => $userName, 'userEmail' => $userEmail, 'userAvatar' => $userAvatar]);
+  }
+}
