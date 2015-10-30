@@ -9,12 +9,17 @@ body {
 .logos {
   font-size: 3em;
   position: absolute;
-  bottom: 0;
+  bottom: 30px;
   width: 100%;
 }
 
 a, a:active, a:visited {
   text-decoration: none;
+  color: rgb(255, 255, 255);
+}
+
+.fa-heart {
+  color: rgb(255, 0, 0);
 }
 
 .frontpage {
@@ -25,8 +30,12 @@ a, a:active, a:visited {
   height: 75px;
 }
 
-.logos h3 {
+.footer-text h3 {
   margin: 3em 0 1em 0;
+}
+
+.logos div p {
+  font-size: 15px;
 }
 
 .frontpage div.title {
@@ -40,6 +49,7 @@ a, a:active, a:visited {
   height: 60px;
   padding: 5px 25px 5px 25px;
   background-color: black;
+  margin-bottom: 15px;
 }
 
 .logo-img {
@@ -55,11 +65,37 @@ a, a:active, a:visited {
   margin: 0;
   padding: 0;
   line-height: 60px;
-  font-size: 1em;
+  font-size: 1.2em;
+}
+
+.list-group {
+  padding-top: 0;
 }
 
 #mapPlaceholder {
   width: 100%;
   min-height: 300px;
   background-color: rgb(0, 175, 0);
+}
+
+.appname p {
+  font-size: 2.3em;
+  color: rgb(255, 255, 255);
+  line-height: 60px;
+  margin: 0;
+  padding: 0;
+}
+
+.footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  height: 50px;
+}
+
+.footer p {
+  line-height: 50px;
+  font-size: 1.3em;
 }

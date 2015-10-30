@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Fill Me App</title>
+    <title>Internet of Health</title>
 
     <!-- Lato Google Font -->
     <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
@@ -43,8 +43,21 @@
         <i class="fa fa-globe fa-2x"></i>
       </div>
 
-      <br />
+      <div class="col-lg-4">
+        <p>Even if you're busy</p>
+      </div>
 
+      <div class="col-lg-4">
+        <p>Especially if you wanna eat healthy</p>
+      </div>
+
+      <div class="col-lg-4">
+        <p>And basically everywhere</p>
+      </div>
+
+    </div>
+
+    <div class="row footer-text text-center">
       <h3>Developed with <i class="fa fa-heart fa-lg faa-pulse animated"></i> at the #CiscoUC15</h3>
     </div>
   </body>

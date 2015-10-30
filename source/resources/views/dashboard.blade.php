@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Fill Me App</title>
+    <title>Internet of Health</title>
 
     <!-- Lato Google Font -->
     <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
@@ -39,7 +39,7 @@
         var coords = new google.maps.LatLng(latitude, longitude);
 
         var mapOptions = {
-          zoom: 15,
+          zoom: 12,
           center: coords,
           mapTypeControl: true,
           mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -48,8 +48,8 @@
         //create the map, and place it in the HTML map div
         map = new google.maps.Map(document.getElementById("mapPlaceholder"), mapOptions);
 
-        //place the initial marker
         var marker = new google.maps.Marker({
+          label: "Y",
           position: coords,
           map: map,
           title: "You are here!"
@@ -125,50 +125,67 @@
        * appropriate message is printed.
        */
       function listUpcomingEvents() {
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
         var request = gapi.client.calendar.events.list({
           'calendarId': 'primary',
           'timeMin': (new Date()).toISOString(),
           'showDeleted': false,
           'singleEvents': true,
           'maxResults': 10,
-          'orderBy': 'startTime'
+          'orderBy': 'startTime',
+          'timeMax': tomorrow.toISOString()
         });
 
         request.execute(function(resp) {
           var events = resp.items;
-          appendPre('Upcoming events:');
+          appendPre('Today\'s Events:');
 
+          function addZero(i) {
+            if (i < 10) {
+              i = "0" + i;
+            }
+            return i;
+          }
           if (events.length > 0) {
             for (i = 0; i < events.length; i++) {
               var event = events[i];
               var when = event.start.dateTime;
+              var whenEnd = event.end.dateTime;
               if (!when) {
                 when = event.start.date;
+                appendPre(' - '+ event.summary + ' (' + when + ')')
+              } else {
+                var whenDate = new Date(when);
+                var whenEndDate = new Date(whenEnd);
+                var startHour = addZero(whenDate.getHours());
+                var startMin = addZero(whenDate.getMinutes());
+                var endHour = addZero(whenEndDate.getHours());
+                var endMin = addZero(whenEndDate.getMinutes());
+                appendPre(' - '+ event.summary + ' (' + startHour+':'+startMin+' - '+endHour+':'+endMin + ')')
               }
-              appendPre(event.summary + ' (' + when + ')')
 
               if (event.location != undefined) {
                 var geocoder = new google.maps.Geocoder();
                 geocodeAddress(event.location, geocoder, map);
               }
             }
+
           } else {
             appendPre('No upcoming events found.');
           }
-
         });
       }
 
-      function geocodeAddress(address, geocoder, resultsMap) {
+      function geocodeAddress(address, geocoder, resultsMap, i) {
         geocoder.geocode({'address': address}, function(results, status) {
           if (status === google.maps.GeocoderStatus.OK) {
             resultsMap.setCenter(results[0].geometry.location);
             var marker = new google.maps.Marker({
               map: resultsMap,
-              position: results[0].geometry.location
+              position: results[0].geometry.location,
             });
-          } else {
-            alert('Geocode was not successful for the following reason: ' + status);
+            marker.setIcon('http://maps.google.com/mapfiles/ms/micons/green.png');
           }
         });
       }
@@ -192,12 +209,16 @@
   <body>
     <div class="container menubar">
       <div class="row">
-        <div class="col-lg-6 text-left">
+        <div class="col-lg-3 text-left">
           <img class="logo-img" src="<?php echo asset('img/myfitnesspal.png')?>" />
         </div>
 
-        <div class="col-lg-6 text-right user-menu">
-          <h4><i class="fa fa-user"></i> {{$userName}}</h4>
+        <div class="col-lg-6 text-center appname">
+          <p>Internet of Health</p>
+        </div>
+
+        <div class="col-lg-3 text-right user-menu">
+          <p><i class="fa fa-user"></i> {{$userName}}</p>
         </div>
       </div>
     </div>
@@ -205,23 +226,30 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-4">
-          <div id="mapPlaceholder"></div>
+          <div class="list-group" id="mapPlaceholder"></div>
         </div>
 
         <div class="col-lg-4">
-          <div id="authorize-div" style="display: none">
-            <span>Authorize access to Google Calendar API</span>
-            <!--Button for the user to click to initiate auth sequence -->
-            <button id="authorize-button" onclick="handleAuthClick(event)">
-              Authorize
-            </button>
+          <div class="list-group">
+            <div id="authorize-div" class="img-rounded" style="display: none">
+              <span>Authorize access to Google Calendar API</span>
+              <!--Button for the user to click to initiate auth sequence -->
+              <button type="button" class="btn btn-success" id="authorize-button" onclick="handleAuthClick(event)">
+                Authorize Calendar
+              </button>
+            </div>
           </div>
           <pre id="output"></pre>
         </div>
 
         <div class="col-lg-4">
-
+          <img style="width: 100%;" src="<?php echo asset('img/mfp.jpg')?>" />
         </div>
       </div>
+    </div>
+
+    <div class="container footer text-center">
+      <p>CISCO University Challenge 2015</p>
+    </div>
   </body>
 </html>
